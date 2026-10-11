@@ -1,0 +1,25 @@
+{
+  "name": "alarm-clock-system",
+  "version": "1.0.0",
+  "description": "Modern alarm clock dashboard and API for the OS alarm clock project.",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "alarm",
+    "node",
+    "express",
+    "os-project"
+  ],
+  "author": "KLH CSE Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.0"
+  }
+}

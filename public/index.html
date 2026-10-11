@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alarm Clock</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-wrap">
+          <div class="brand-icon">◔</div>
+          <div>
+            <div class="brand-name">ALARM CLOCK</div>
+            <div class="brand-subtitle">Smart Time Management</div>
+          </div>
+        </div>
+
+        <nav class="nav-menu" aria-label="Main navigation">
+          <button class="nav-button active" data-page="dashboard" aria-label="Open dashboard">
+            Dashboard
+          </button>
+          <button class="nav-button" data-page="alarms" aria-label="Open alarms">
+            Alarms
+          </button>
+          <button class="nav-button" data-page="history" aria-label="Open history">
+            History
+          </button>
+          <button class="nav-button" data-page="system" aria-label="Open system monitor">
+            System Monitor
+          </button>
+          <button class="nav-button" data-page="settings" aria-label="Open settings">
+            Settings
+          </button>
+        </nav>
+
+        <div class="sidebar-card">
+          <span class="status-dot"></span>
+          <div>
+            <strong>System Status</strong>
+            <p>Monitoring</p>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Smart time management system</p>
+            <h1>ALARM CLOCK</h1>
+          </div>
+          <div class="topbar-meta">
+            <div>
+              <small>Current Time</small>
+              <div id="clockDisplay" class="clock-display">--:--:--</div>
+            </div>
+            <div>
+              <small>Current Date</small>
+              <div id="dateDisplay" class="date-display">--</div>
+            </div>
+          </div>
+        </header>
+
+        <section id="dashboard" class="page active">
+          <div class="hero-grid">
+            <div class="card next-alarm-card">
+              <div class="card-label">Next Alarm</div>
+              <div id="nextAlarmTime" class="next-alarm-time">No upcoming alarms</div>
+              <div id="nextAlarmLabel" class="next-alarm-label">Set your next reminder</div>
+              <div id="nextAlarmMeta" class="next-alarm-meta">Daily</div>
+              <div class="countdown-wrapper">
+                <span class="countdown-label">Countdown</span>
+                <strong id="countdownDisplay">--h --m --s</strong>
+              </div>
+            </div>
+
+            <div class="card system-card">
+              <div class="card-label">Monitoring</div>
+              <div class="mini-line">
+                <span>Application</span>
+                <strong id="appStatus">Running</strong>
+              </div>
+              <div class="mini-line">
+                <span>Alarm Monitor</span>
+                <strong id="monitorStatus">Active</strong>
+              </div>
+              <div class="mini-line">
+                <span>Server</span>
+                <strong id="serverStatus">Online</strong>
+              </div>
+              <div class="mini-line">
+                <span>Active Alarms</span>
+                <strong id="activeCountDisplay">0</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-grid" id="statsGrid"></div>
+
+          <div class="card large-panel">
+            <div class="section-header">
+              <div>
+                <p class="section-kicker">Overview</p>
+                <h3>Today's Alarms</h3>
+              </div>
+              <button id="addAlarmFromDashboard" class="primary-button">+ Add Alarm</button>
+            </div>
+
+            <div class="toolbar-row">
+              <div class="search-box">
+                <span>⌕</span>
+                <input id="searchInput" type="search" placeholder="Search alarms..." aria-label="Search alarms" />
+              </div>
+              <div class="filter-group" aria-label="Alarm filter controls">
+                <button class="filter-button active" data-filter="all">All</button>
+                <button class="filter-button" data-filter="active">Active</button>
+                <button class="filter-button" data-filter="disabled">Disabled</button>
+                <button class="filter-button" data-filter="daily">Daily</button>
+                <button class="filter-button" data-filter="once">Once</button>
+                <button class="filter-button" data-filter="ringing">Ringing</button>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Time</th>
+                    <th>Label</th>
+                    <th>Repeat</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="alarmTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="alarms" class="page">
+          <div class="card large-panel">
+            <div class="section-header">
+              <div>
+                <p class="section-kicker">Alarms</p>
+                <h3>Manage all scheduled alerts</h3>
+              </div>
+              <button id="addAlarmFromAlarms" class="primary-button">+ Add Alarm</button>
+            </div>
+            <div class="toolbar-row">
+              <div class="search-box">
+                <span>⌕</span>
+                <input id="searchInputPage" type="search" placeholder="Search alarms..." aria-label="Search alarms" />
+              </div>
+            </div>
+            <div id="alarmsListContainer" class="alarm-card-list"></div>
+          </div>
+        </section>
+
+        <section id="history" class="page">
+          <div class="card large-panel">
+            <div class="section-header">
+              <div>
+                <p class="section-kicker">Activity</p>
+                <h3>Alarm History</h3>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Alarm</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="system" class="page">
+          <div class="system-grid">
+            <div class="card">
+              <div class="section-header">
+                <div>
+                  <p class="section-kicker">System</p>
+                  <h3>System Monitor</h3>
+                </div>
+              </div>
+              <ul class="system-list" id="systemStatusList"></ul>
+            </div>
+            <div class="card">
+              <div class="section-header">
+                <div>
+                  <p class="section-kicker">Technical</p>
+                  <h3>OS Concept Demonstration</h3>
+                </div>
+              </div>
+              <div class="tech-stack" id="technicalDetailsList"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="settings" class="page">
+          <div class="card large-panel">
+            <div class="section-header">
+              <div>
+                <p class="section-kicker">Preferences</p>
+                <h3>Settings</h3>
+              </div>
+            </div>
+
+            <div class="settings-grid">
+              <div class="setting-row">
+                <label for="clockFormat">Time format</label>
+                <select id="clockFormat">
+                  <option value="12">12 hour</option>
+                  <option value="24">24 hour</option>
+                </select>
+              </div>
+              <div class="setting-row">
+                <label for="defaultSnooze">Default snooze</label>
+                <select id="defaultSnooze">
+                  <option value="5">5 min</option>
+                  <option value="10">10 min</option>
+                  <option value="15">15 min</option>
+                </select>
+              </div>
+              <div class="setting-row toggle-row">
+                <label for="soundEnabled">Alarm sound</label>
+                <input id="soundEnabled" type="checkbox" checked />
+              </div>
+              <div class="setting-row toggle-row">
+                <label for="notificationEnabled">Notifications</label>
+                <input id="notificationEnabled" type="checkbox" checked />
+              </div>
+              <div class="setting-row toggle-row">
+                <label for="darkModeEnabled">Dark mode</label>
+                <input id="darkModeEnabled" type="checkbox" />
+              </div>
+              <div class="setting-row custom-sound-setting">
+                <label for="defaultSoundUpload">My alarm sound</label>
+                <input id="defaultSoundUpload" type="file" accept="audio/*" />
+                <small id="customSoundName">No custom sound selected.</small>
+                <button id="clearCustomSoundBtn" class="ghost-button" type="button">Remove custom sound</button>
+              </div>
+            </div>
+
+            <div class="settings-actions">
+              <button id="enableNotificationsBtn" class="secondary-button">Enable Notifications</button>
+              <button id="testSoundBtn" class="secondary-button">Test Sound</button>
+              <button id="stopSoundBtn" class="ghost-button">Stop Sound</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="alarmModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-backdrop" data-close="modal"></div>
+      <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-header">
+          <div>
+            <p class="section-kicker">Alarm setup</p>
+            <h3 id="modalTitle">Add Alarm</h3>
+          </div>
+          <button class="close-button" id="closeModalBtn" aria-label="Close alarm modal">×</button>
+        </div>
+
+        <form id="alarmForm" class="alarm-form">
+          <div class="field-grid alarm-time-grid">
+            <div class="field-group">
+              <label for="hourInput">Hour</label>
+              <input id="hourInput" name="hour" type="number" min="0" max="23" required />
+            </div>
+            <div class="field-group">
+              <label for="minuteInput">Minute</label>
+              <input id="minuteInput" name="minute" type="number" min="0" max="59" required />
+            </div>
+            <div id="periodFieldGroup" class="field-group" style="display: none;">
+              <label for="periodInput">AM / PM</label>
+              <select id="periodInput" name="period">
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="labelInput">Label</label>
+            <input id="labelInput" name="label" type="text" maxlength="40" placeholder="Wake Up" required />
+          </div>
+
+          <div class="field-grid">
+            <div class="field-group">
+              <label for="repeatInput">Repeat</label>
+              <select id="repeatInput" name="repeat">
+                <option value="once">Once</option>
+                <option value="daily">Daily</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="soundInput">Sound</label>
+              <select id="soundInput" name="sound">
+                <option value="classic">Classic</option>
+                <option value="soft">Soft</option>
+                <option value="beep">Beep</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-group custom-sound-group">
+            <label for="soundUpload">Custom Sound File</label>
+            <input id="soundUpload" type="file" accept="audio/*" />
+            <small>Optional: use your own tone for this alarm.</small>
+          </div>
+
+          <div class="field-grid">
+            <div class="field-group">
+              <label for="snoozeInput">Snooze (min)</label>
+              <input id="snoozeInput" name="snooze" type="number" min="1" max="60" value="5" />
+            </div>
+            <div class="field-group">
+              <label for="notesInput">Notes</label>
+              <input id="notesInput" name="notes" type="text" maxlength="120" placeholder="Optional notes" />
+            </div>
+          </div>
+
+          <div id="draftSummary" class="draft-summary"></div>
+
+          <div class="modal-actions">
+            <button type="button" id="cancelAlarmBtn" class="ghost-button">Cancel</button>
+            <button type="button" id="addAnotherBtn" class="secondary-button">Add Another Alarm</button>
+            <button type="submit" id="saveAlarmBtn" class="primary-button">Save Alarm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="ringingModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-backdrop"></div>
+      <div class="ringing-card" role="alertdialog" aria-live="assertive">
+        <div class="ringing-icon">🔔</div>
+        <h2>ALARM RINGING</h2>
+        <div id="ringingTime" class="ringing-time">--:--</div>
+        <div id="ringingLabel" class="ringing-label">Alarm</div>
+        <div class="ringing-actions">
+          <button id="stopAlarmBtn" class="primary-button">STOP</button>
+          <button id="snoozeAlarmBtn" class="secondary-button">SNOOZE 5 MIN</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast hidden" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

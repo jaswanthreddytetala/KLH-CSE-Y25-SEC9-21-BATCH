@@ -1,115 +1,79 @@
-﻿# KLH_CSE_Y25_Sec9-21-Batch
+﻿# Alarm Clock System
 
-## Alarm Clock System
+A polished alarm clock dashboard built with Node.js, Express, and browser-side JavaScript. The project keeps the native C/OS layer concept separate from the web interface while still representing the same alarm functionality in a modern dashboard.
 
-### Project Title
-Alarm Clock System
+## Project structure
 
-### Team Members
-- 2520030234 — T. Karthik
-- 2520030239 — CH. Manikanta
-- 2520030284 — T. Jaswanth Reddy
-
-### Supervisor
-- Dr. Harika
-
----
-
-## Abstract
-The Alarm Clock System is a simple and efficient system designed to help users manage their time and receive alerts at specified times. The system allows users to set, modify, and cancel alarms according to their requirements. When the current time matches the set alarm time, the system generates an alert through a buzzer, sound, or notification to remind the user.
-
-The system can display the current time and alarm status through a digital display or user interface. It can be implemented using programming concepts such as conditional statements, loops, functions, and data structures for managing multiple alarms. An advanced version can include features such as multiple alarms, snooze functionality, alarm labels, 12/24-hour time formats, and customizable alert sounds.
-
-The main objective of the project is to provide a reliable, user-friendly, and automated time-management solution that reduces the possibility of missing important tasks, appointments, or wake-up times.
-
----
-
-## Objective
-The primary goal of this project is to create an alarm system that:
-- helps users set alarms at required times,
-- displays the current time,
-- reminds users through audio or visual alerts,
-- allows modification or cancellation of alarms,
-- supports easy and efficient time management.
-
----
+```text
+OS_PROJECT/
+├── README.md
+├── package.json
+├── .gitignore
+├── data/
+│   ├── alarms.json
+│   └── history.json
+├── public/
+│   ├── index.html
+│   ├── style.css
+│   ├── app.js
+│   └── assets/
+├── server/
+│   ├── server.js
+│   ├── alarmManager.js
+│   └── systemMonitor.js
+├── src/
+│   └── alarm_clock.c
+├── test/
+│   └── server.test.js
+└── results/
+```
 
 ## Features
-- Displays current date and time
-- Sets one or multiple alarms
-- Modifies or deletes existing alarms
-- Triggers an alert when the alarm time matches the current time
-- Optional snooze feature
-- Supports 12-hour or 24-hour clock format
-- User-friendly interface
-- Can be expanded with custom sound and alarm labels
 
----
+- Current live browser time and date
+- Starts with no alarms; users can create up to 200 alarms
+- Add, edit, delete, enable, disable, snooze, and stop
+- Daily and once-only alarm modes
+- Alarm search and filtering
+- Persistent storage in JSON files
+- History tracking with status updates
+- Notification and sound handling
+- System monitor and OS concept panel
+- Responsive dashboard with light and dark mode
 
-## Working Principle
-1. The user enters the alarm time.
-2. The system stores the time in memory.
-3. The program continuously compares the current system time with the set alarm time.
-4. When both times match, the system activates the alert.
-5. The user can stop, snooze, or delete the alarm.
+## Run the application
 
----
-
-## System Requirements
-### For software implementation
-- Python 3.x (recommended)
-- Tkinter (for GUI-based version)
-- Python standard library modules
-
-### Optional tools
-- IDE such as VS Code, PyCharm, or IDLE
-- Audio playback support for alarm sound
-
----
-
-## Project Structure
-```text
-Alarm-Clock-System/
-├── README.md
-├── src/
-│   └── alarm_clock.py
-├── docs/
-│   └── project_report.md
-├── results/
-├── reports/
-└── data/
-```
-
----
-
-## How to Run
-1. Open the project folder in your IDE.
-2. Navigate to the source code file.
-3. Run the program using Python.
-
-Example:
 ```bash
-python src/alarm_clock.py
+cd d:/OS_PROJECT
+npm install
+npm start
 ```
 
-If the project uses a graphical interface, the alarm window will open and allow the user to set alarms.
+Then open:
 
----
+```text
+http://localhost:3000
+```
 
-## Future Enhancements
-- Multiple alarm scheduling
-- Snooze and stop buttons
-- Alarm labels and categories
-- Music or custom ringtone support
-- Mobile or web-based version
-- Smart notification integration
+## API endpoints
 
----
+- GET /api/alarms
+- POST /api/alarms
+- PUT /api/alarms/:id
+- DELETE /api/alarms/:id
+- PATCH /api/alarms/:id/toggle
+- POST /api/alarms/:id/snooze
+- GET /api/history
+- GET /api/system
+- GET /api/status
 
-## Conclusion
-The Alarm Clock System is a practical and useful solution for time management and reminder automation. It is simple to use, efficient, and can be expanded into a more advanced smart alarm system in the future.
+## Testing
 
----
+```bash
+cd d:/OS_PROJECT
+npm test
+```
 
-## License
-This project is intended for academic and educational use.
+## OS / C integration note
+
+The native C implementation remains in the project as the OS-level reference, while the web app runs as the front-end alarm interface. The browser does not execute Linux system calls like fork(), mmap(), or pthreads directly; those concepts are documented through the System Monitor panel and the C source file.
